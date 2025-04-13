@@ -23,6 +23,8 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_width()
         self.settings.screen_height = self.screen.get_height()
 
+        self.rotation_angle = -90
+
         # Set title bar of game window.
         pg.display.set_caption("Alien Invasion")
 
@@ -38,11 +40,14 @@ class AlienInvasion:
 
         self._create_fleet()
 
+        # Start alien invasion in an active state.
+        self.game_active = True
+
     def _create_fleet(self):
             """Create the fleet of aliens"""
             # Create an alien and keep adding aliens to the fleet until no room left.
             alien = Alien(self)
-            self.aliens.add(alien)
+            #self.aliens.add(alien)
             alien_width, alien_height = alien.rect.size
 
             current_x, current_y = alien_width, alien_height
@@ -80,10 +85,12 @@ class AlienInvasion:
         """Start the main loop for the game."""
         while True:
             self._check_events()
-            self.ship.update()
-            #self.bullets.update()
-            self._update_bullets()
-            self._update_aliens()
+
+            if self.game_active:
+                self.ship.update()
+                self._update_bullets()
+                self._update_aliens()
+
             self._update_screen()
             self.clock.tick(60)
 
@@ -192,20 +199,27 @@ class AlienInvasion:
             self.ship.center_ship()
 
             # Pause.
-            sleep(0.5)
+            sleep(1.5)
         else:
-            print("Game Over")
-            self._game_over() #sys.exit()
+            self.game_active = False
     
     def _update_screen(self):
         """Update images on the screen, and flip to the new screen."""
         
         # Set background color, redraw the screen during each pass through the loop.
         self.screen.fill(self.settings.bg_color)
+
         for bullet in self.bullets.sprites():
-            bullet.draw_bullet()
-        self.ship.blitme()
-        self.aliens.draw(self.screen)
+            pg.draw.rect(self.screen, self.settings.bullet_color, bullet.rect)
+
+       # Rotate and draw the ship
+        rotated_ship = pg.transform.rotate(self.ship.image, self.rotation_angle)
+        self.screen.blit(rotated_ship, self.ship.rect)
+
+        # Rotate and draw aliens
+        for alien in self.aliens.sprites():
+            rotated_alien = pg.transform.rotate(alien.image, self.rotation_angle)
+            self.screen.blit(rotated_alien, alien.rect)
 
         pg.display.flip()
 
