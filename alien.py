@@ -24,7 +24,9 @@ class Alien(Sprite):
     def check_edges(self):
         """Return True if alien is at edge of screen."""
         screen_rect = self.screen.get_rect()
-        return (self.rect.right >= screen_rect.right) or (self.rect.left <= 0)
+        if self.rect.top <= 0 or self.rect.bottom >= screen_rect.bottom:
+            return True
+        return False
 
     def update(self):
         """Move the alien to the right."""

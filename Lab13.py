@@ -44,20 +44,19 @@ class AlienInvasion:
         self.game_active = True
 
     def _create_fleet(self):
-            """Create the fleet of aliens"""
-            # Create an alien and keep adding aliens to the fleet until no room left.
-            alien = Alien(self)
-            #self.aliens.add(alien)
-            alien_width, alien_height = alien.rect.size
+        """Create the fleet of aliens."""
+        alien = Alien(self)
+        alien_width, alien_height = alien.rect.size
 
-            current_x, current_y = alien_width, alien_height
-            while current_y < (self.settings.screen_height - 8 * alien_height):
-                while current_x < (self.settings.screen_width - 7 * alien_width):
-                    self._create_alien(current_x, current_y)
-                    current_x += 2 * alien_width
+        # Start the fleet at the left side of the screen.
+        current_x, current_y = alien_width, alien_height
+        while current_y < (self.settings.screen_height - 8 * alien_height):
+            while current_x < (self.settings.screen_width - 7 * alien_width):
+                self._create_alien(current_x, current_y)
+                current_x += 2 * alien_width
 
-                current_x = alien_width
-                current_y += 2 * alien_height
+            current_x = alien_width
+            current_y += 2 * alien_height
 
     def _check_fleet_edges(self):
         """Respond appropriately if any aliens have reached an edge."""
@@ -113,10 +112,10 @@ class AlienInvasion:
             event (pygame.event.Event): The event object containing information about the key press.
 
         """
-        if event.key == pg.K_RIGHT:
-            self.ship.moving_right = True
-        elif event.key == pg.K_LEFT:
-            self.ship.moving_left = True
+        if event.key == pg.K_UP:
+            self.ship.moving_up = True
+        elif event.key == pg.K_DOWN:
+            self.ship.moving_down = True
         elif event.key == pg.K_q:
             sys.exit()
         elif event.key == pg.K_SPACE:
@@ -129,10 +128,10 @@ class AlienInvasion:
             event (pygame.event.Event): The event object containing information about the key press
         
         """
-        if event.key == pg.K_RIGHT:
-            self.ship.moving_right = False
-        elif event.key == pg.K_LEFT:
-            self.ship.moving_left = False
+        if event.key == pg.K_UP:
+            self.ship.moving_up = False
+        elif event.key == pg.K_DOWN:
+            self.ship.moving_down = False
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
@@ -213,13 +212,11 @@ class AlienInvasion:
             pg.draw.rect(self.screen, self.settings.bullet_color, bullet.rect)
 
        # Rotate and draw the ship
-        rotated_ship = pg.transform.rotate(self.ship.image, self.rotation_angle)
-        self.screen.blit(rotated_ship, self.ship.rect)
+        self.screen.blit(self.ship.image, self.ship.rect)
 
         # Rotate and draw aliens
         for alien in self.aliens.sprites():
-            rotated_alien = pg.transform.rotate(alien.image, self.rotation_angle)
-            self.screen.blit(rotated_alien, alien.rect)
+            self.screen.blit(alien.image, alien.rect)
 
         pg.display.flip()
 
