@@ -71,7 +71,7 @@ class AlienInvasion:
 
         for alien in self.aliens.sprites():
             alien.rect.x += self.settings.fleet_drop_speed
-        self.settings.fleet_direction *= 1
+        
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the fleet."""
@@ -140,14 +140,12 @@ class AlienInvasion:
 
         # Update bullet positions.
         self.bullets.update()
-        if not self.aliens:
-            self.bullets.empty()
-            self._create_fleet()
+
+        self._check_bullet_alien_collisions()
+
         for bullet in self.bullets.copy():
             if bullet.rect.left <= 0:
                 self.bullets.remove(bullet)
-
-        self._check_bullet_alien_collisions()
 
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
@@ -221,10 +219,10 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             pg.draw.rect(self.screen, self.settings.bullet_color, bullet.rect)
 
-       # Rotate and draw the ship
+       # Draw the ship
         self.screen.blit(self.ship.image, self.ship.rect)
 
-        # Rotate and draw aliens
+        # Draw aliens
         for alien in self.aliens.sprites():
             self.screen.blit(alien.image, alien.rect)
 
