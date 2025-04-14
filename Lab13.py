@@ -23,7 +23,7 @@ class AlienInvasion:
         self.settings.screen_width = self.screen.get_width()
         self.settings.screen_height = self.screen.get_height()
 
-        self.rotation_angle = -90
+        #self.rotation_angle = -90
 
         # Set title bar of game window.
         pg.display.set_caption("Alien Invasion")
@@ -68,8 +68,8 @@ class AlienInvasion:
     def _change_fleet_direction(self):
         """Drop the entire fleet and change the fleet's direction."""
         for alien in self.aliens.sprites():
-            alien.rect.y += self.settings.fleet_drop_speed
-        self.settings.fleet_direction *= -1
+            alien.rect.x += self.settings.fleet_drop_speed
+        self.settings.fleet_direction *= 1
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the fleet."""
@@ -165,7 +165,13 @@ class AlienInvasion:
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update the positions."""
         self._check_fleet_edges()
-        self.aliens.update()
+        
+        for alien in self.aliens.sprites():
+            alien.rect.y += self.settings.fleet_direction * self.settings.alien_speed
+
+        # Move aliens horizontally when fleet hits the bottom
+        if alien.rect.bottom >= self.screen.get_rect().bottom:
+            alien.rect.x += self.settings.fleet_drop_speed
 
         # Look for alien-ship collisions.
         if pg.sprite.spritecollideany(self.ship, self.aliens):
@@ -174,13 +180,23 @@ class AlienInvasion:
         # Look for aliens hitting the bottom of the screen.
         self._check_aliens_bottom()
 
+
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
-        screen_rect = self.screen.get_rect()
+        """screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= screen_rect.bottom:
                 # Treat this the same as if the ship got hit.
-                self._ship_hit()
+                #self._ship_hit()
+                break
+        """
+        screen_rect = self.screen.get_rect()
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom or alien.rect.top <= 0:
+            # Move the fleet to the right and reverse vertical direction
+                for alien in self.aliens.sprites():
+                    alien.rect.x += self.settings.fleet_drop_speed
+                self.settings.fleet_direction *= -1  # Reverse vertical direction
                 break
 
     def _ship_hit(self):
