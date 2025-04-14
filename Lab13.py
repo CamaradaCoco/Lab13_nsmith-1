@@ -14,6 +14,7 @@ class AlienInvasion:
 
     def __init__(self):
         """Initialize the game, and create game resources."""
+
         pg.init()
         self.clock = pg.time.Clock()
         self.settings = Settings()
@@ -22,8 +23,6 @@ class AlienInvasion:
         self.screen = pg.display.set_mode((0, 0), pg.FULLSCREEN)
         self.settings.screen_width = self.screen.get_width()
         self.settings.screen_height = self.screen.get_height()
-
-        #self.rotation_angle = -90
 
         # Set title bar of game window.
         pg.display.set_caption("Alien Invasion")
@@ -45,21 +44,23 @@ class AlienInvasion:
 
     def _create_fleet(self):
         """Create the fleet of aliens."""
+        
         alien = Alien(self)
         alien_width, alien_height = alien.rect.size
 
         # Start the fleet at the left side of the screen.
         current_x, current_y = alien_width, alien_height
-        while current_y < (self.settings.screen_height - 8 * alien_height):
-            while current_x < (self.settings.screen_width - 7 * alien_width):
+        while current_y < (self.settings.screen_height - 1.5 * alien_height):
+            while current_x < (self.settings.screen_width - 10 * alien_width):
                 self._create_alien(current_x, current_y)
-                current_x += 2 * alien_width
+                current_x += 1 * alien_width
 
             current_x = alien_width
-            current_y += 2 * alien_height
+            current_y += 1 * alien_height
 
     def _check_fleet_edges(self):
         """Respond appropriately if any aliens have reached an edge."""
+
         for alien in self.aliens.sprites():
             if alien.check_edges():
                 self._change_fleet_direction()
@@ -67,12 +68,14 @@ class AlienInvasion:
 
     def _change_fleet_direction(self):
         """Drop the entire fleet and change the fleet's direction."""
+
         for alien in self.aliens.sprites():
             alien.rect.x += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= 1
 
     def _create_alien(self, x_position, y_position):
         """Create an alien and place it in the fleet."""
+
         new_alien = Alien(self)
         new_alien.x = x_position
         new_alien.rect.x = x_position
@@ -82,6 +85,7 @@ class AlienInvasion:
 
     def run_game(self):
         """Start the main loop for the game."""
+
         while True:
             self._check_events()
 
@@ -94,8 +98,8 @@ class AlienInvasion:
             self.clock.tick(60)
 
     def _check_events(self):
-        """Respond to keypresses and mouse events.
-        """
+        """Respond to keypresses and mouse events."""
+
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
@@ -105,13 +109,8 @@ class AlienInvasion:
                 self._check_keyup_events(event)
 
     def _check_keydown_events(self, event):
-        """
-        Respond to key presses.
+        """Respond to key presses."""
 
-        Args:
-            event (pygame.event.Event): The event object containing information about the key press.
-
-        """
         if event.key == pg.K_UP:
             self.ship.moving_up = True
         elif event.key == pg.K_DOWN:
@@ -122,12 +121,8 @@ class AlienInvasion:
             self._fire_bullet()
    
     def _check_keyup_events(self, event):
-        """Respond to key releases.
-        
-        Args: 
-            event (pygame.event.Event): The event object containing information about the key press
-        
-        """
+        """Respond to key releases."""
+
         if event.key == pg.K_UP:
             self.ship.moving_up = False
         elif event.key == pg.K_DOWN:
@@ -135,25 +130,28 @@ class AlienInvasion:
 
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
+
         if len(self.bullets) < self.settings.bullets_allowed:
             new_bullet = Bullet(self)
             self.bullets.add(new_bullet)
 
     def _update_bullets(self):
         """Update position of bullets and get rid of old bullets."""
+
         # Update bullet positions.
         self.bullets.update()
         if not self.aliens:
             self.bullets.empty()
             self._create_fleet()
         for bullet in self.bullets.copy():
-            if bullet.rect.bottom <= 0:
+            if bullet.rect.left <= 0:
                 self.bullets.remove(bullet)
 
         self._check_bullet_alien_collisions()
 
     def _check_bullet_alien_collisions(self):
         """Respond to bullet-alien collisions."""
+
         # Remove any bullets and aliens that have collided.
         collisions = pg.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
@@ -164,6 +162,7 @@ class AlienInvasion:
 
     def _update_aliens(self):
         """Check if the fleet is at an edge, then update the positions."""
+        
         self._check_fleet_edges()
         
         for alien in self.aliens.sprites():
@@ -183,13 +182,7 @@ class AlienInvasion:
 
     def _check_aliens_bottom(self):
         """Check if any aliens have reached the bottom of the screen."""
-        """screen_rect = self.screen.get_rect()
-        for alien in self.aliens.sprites():
-            if alien.rect.bottom >= screen_rect.bottom:
-                # Treat this the same as if the ship got hit.
-                #self._ship_hit()
-                break
-        """
+
         screen_rect = self.screen.get_rect()
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= screen_rect.bottom or alien.rect.top <= 0:
@@ -201,6 +194,7 @@ class AlienInvasion:
 
     def _ship_hit(self):
         """Respond to the ship being hit by an alien."""
+
         if self.stats.ships_left > 0:
             # Decrement ships_left.
             self.stats.ships_left -= 1
