@@ -1,6 +1,20 @@
 # Lab 13 #1 / Nicholas Smith / 10 April 2025
 
+"""
+This module defines the AlienInvasion class, which serves as the main entry point
+for the Alien Invasion game. It manages the game's initialization, main loop, and
+core functionality, including event handling, updating game objects, and rendering
+the game screen.
+
+Classes:
+    AlienInvasion: The main class to manage game assets and behavior.
+
+Usage:
+    To start the game, run this module directly. The game initializes all resources,
+    enters the main loop, and handles user input, game updates, and rendering.
+"""
 import sys
+from pathlib import Path
 from time import sleep
 import pygame as pg
 from settings import Settings

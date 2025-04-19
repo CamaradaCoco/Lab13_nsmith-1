@@ -1,4 +1,21 @@
+"""
+ship.py
+
+This module defines the Ship class, which is responsible for managing the player's ship
+in the Alien Invasion game. The Ship class handles the ship's initialization, movement,
+and rendering on the screen.
+
+Classes:
+    Ship: A class to manage the player's ship.
+
+Usage:
+    The Ship class is instantiated by passing the main game instance (ai_game) as an argument.
+    It provides methods to update the ship's position based on user input, draw the ship
+    on the screen, and center the ship when needed.
+"""
+
 import pygame as pg
+from pathlib import Path
 
 class Ship:
     """A class to manage the ship."""
@@ -11,7 +28,8 @@ class Ship:
         self.settings = ai_game.settings
 
         # Load the ship image and get its rect.
-        self.image = pg.image.load('images/spaceship.png')
+        image_path = Path('images') / 'spaceship.png'
+        self.image = pg.image.load(str(image_path)).convert_alpha()
         self.rect = self.image.get_rect()
 
         # Start each new ship at the bottom center of the screen.

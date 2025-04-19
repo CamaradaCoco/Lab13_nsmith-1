@@ -1,3 +1,18 @@
+"""
+game_stats.py
+
+This module defines the GameStats class, which is responsible for tracking and managing
+statistics for the Alien Invasion game. These statistics include the number of ships
+remaining and other game-related metrics.
+
+Classes:
+    GameStats: A class to track and manage game statistics.
+
+Usage:
+    The GameStats class is instantiated at the start of the game and is used to track
+    statistics that can change during gameplay, such as the number of ships left.
+"""
+
 class GameStats:
     """Track statistics for the game."""
     

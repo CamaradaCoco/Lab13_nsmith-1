@@ -1,3 +1,19 @@
+"""
+settings.py
+
+This module defines the Settings class, which stores all the configurable settings
+for the Alien Invasion game. These settings include screen dimensions, ship properties,
+bullet properties, and alien fleet behavior.
+
+Classes:
+    Settings: A class to store all game settings.
+
+Usage:
+    The Settings class is instantiated at the start of the game and provides access
+    to all static and dynamic settings throughout the game.
+
+"""
+
 class Settings:
     "A class to store all settings for Alien Invasion."
 

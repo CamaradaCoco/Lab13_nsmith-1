@@ -1,3 +1,18 @@
+"""
+bullet.py
+
+This module defines the Bullet class, which is responsible for managing bullets
+fired from the ship in the Alien Invasion game. The Bullet class handles the
+creation, movement, and rendering of bullets on the screen.
+
+Classes:
+    Bullet: A class to manage bullets fired from the ship.
+
+Usage:
+    The Bullet class is instantiated whenever the player fires a bullet. It provides
+    methods to update the bullet's position and draw it on the screen.
+"""
+
 import pygame as pg
 from pygame.sprite import Sprite
 
