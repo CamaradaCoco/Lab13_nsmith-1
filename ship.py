@@ -28,7 +28,7 @@ class Ship:
         self.settings = ai_game.settings
 
         # Load the ship image and get its rect.
-        image_path = Path('images') / 'spaceship.png'
+        image_path = Path.cwd() / "images" / "spaceship.png"
         self.image = pg.image.load(str(image_path)).convert_alpha()
         self.rect = self.image.get_rect()
 

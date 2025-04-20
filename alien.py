@@ -13,7 +13,7 @@ class Alien(Sprite):
         self.settings = ai_game.settings
 
         # Load the alien image and set its rect attribute.
-        image_path = Path('images') / 'small.png'
+        image_path = Path.cwd() / "images" / "small.png"
         self.image = pg.image.load(str(image_path)).convert_alpha()
         self.rect = self.image.get_rect()
 
